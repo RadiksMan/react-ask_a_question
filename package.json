@@ -1,0 +1,29 @@
+{
+  "name": "ask-a-question",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "firebase": "^4.1.3",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
+    "react-router-dom": "^4.1.1",
+    "redux": "^3.7.1",
+    "sfcookies": "^1.0.2",
+    "shortid": "^2.2.8"
+  },
+  "devDependencies": {
+    "node-sass-chokidar": "0.0.3",
+    "npm-run-all": "^4.0.2",
+    "react-scripts": "1.0.7"
+  },
+  "scripts": {
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/style -o src/style --watch --recursive",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm run build-css && react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
