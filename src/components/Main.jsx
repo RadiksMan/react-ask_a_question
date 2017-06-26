@@ -9,9 +9,15 @@ class Main extends Component {
     constructor(){
         super();
         this.state = {
-            id:''
+            id:'',
+            userAnswer:''
         }
     }
+
+    addQuestion(){
+
+    }
+
 
     componentDidMount() {
         let userID = null;
@@ -32,7 +38,20 @@ class Main extends Component {
         console.log('his.state',this.state)
         return (
             <div>
-                Main
+                <div className="main-form">
+                    <input
+                        type="text"
+                        placeholder="Ваш вопрос"
+                        className="main-form-input"
+                        onChange={event =>{ this.setState({userQuestionText:event.target.value}) }}
+                    />
+                    <button
+                        className="main-form-btn"
+                        onClick={() => this.addQuestion() }
+                    >
+                        Задать вопрос
+                    </button>
+                </div>
             </div>
         )
     }
