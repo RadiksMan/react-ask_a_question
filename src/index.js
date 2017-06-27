@@ -19,11 +19,13 @@ ReactDOM.render(
         <Router>
             <div>
                 <Header />
-                <Switch>
+                <div className="mbox main">
+                <Switch >
                     <Route path="/" exact component={Main} />
                     <Route path="/history" exact component={History} />
                     <Route path="/about" exact component={About} />
                 </Switch>
+                </div>
             </div>
         </Router>
     </Provider>,

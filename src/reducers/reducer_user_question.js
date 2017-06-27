@@ -1,17 +1,24 @@
-import { ADD_QUESTION } from '../constanst';
+import { ADD_QUESTION , DECLARE_USER_ID } from '../constanst';
 
-let obj = {
+let userId = {
     id: null
 }
 
-export default (state = obj, action) => {
+export default (state = [], action) => {
     switch(action.type){
         case ADD_QUESTION:
-            const{id} = action;
-            obj = {
-                id
+            const{userQuestionText,userTime} = action.params;
+            let obj = {
+                userQuestionText,
+                userTime
             }
+            console.log('obj',obj);
             return obj;
+        case DECLARE_USER_ID:
+            const {id} = action;
+            userId = {id};
+            console.log('userId',userId);
+            return userId;
         default:
             return state;
     }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addQuestion, declareUserID} from '../actions';
 
 import { bake_cookie, read_cookie } from 'sfcookies';
 import shortid  from 'shortid';
@@ -22,10 +24,9 @@ class Main extends Component {
 
     addQuestion(event){
         event.preventDefault();
+
         const time = Date.parse(new Date());
         this.setState({userTime:time});
-
-        //console.log('this.state',this.state);
 
         const {id,userQuestionText,userTime,userAnswer,lastQuestionKey} = this.state;
 
@@ -39,14 +40,17 @@ class Main extends Component {
             console.log(err);
         }
 
-        userQ.push({
+        const questionObj = {
             id,
             userQuestionText,
             userTime:time,
             userAnswer:''
-        });
+        }
+
+        userQ.push(questionObj);
+        this.props.addQuestion(questionObj);
+
         event.target.reset();
-        //console.log('event',event.target);
     }
 
 
@@ -61,7 +65,8 @@ class Main extends Component {
             bake_cookie('asck-a-question-id', userID)
         }
 
-        this.setState({id:userID})
+        this.setState({id:userID});
+        this.props.declareUserID(userID);
 
 
         userQ.orderByKey().limitToLast(1).on('value', (snapshot) => {
@@ -76,12 +81,11 @@ class Main extends Component {
     }
 
     render() {
-        //console.log('this.state',this.state)
+
         const lastQ = {...this.state.lastQuestionData};
 
         const isSameUser = (  this.state.id === lastQ.id ) ? true : false;
-        //const isSameUser = false;
-        //console.log('isSameUser',isSameUser);
+
         return (
             <div>
                 <div className="main-form">
@@ -124,8 +128,6 @@ class Main extends Component {
                         )
 
                         }
-
-
                     </form>
                 </div>
             </div>
@@ -133,4 +135,4 @@ class Main extends Component {
     }
 }
 
-export default Main;
+export default connect(null,{addQuestion,declareUserID})(Main);

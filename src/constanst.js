@@ -1,1 +1,2 @@
 export const ADD_QUESTION = 'ADD_QUESTION';
+export const DECLARE_USER_ID = 'DECLARE_USER_ID';
