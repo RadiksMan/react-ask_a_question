@@ -12,12 +12,10 @@ export default (state = [], action) => {
                 userQuestionText,
                 userTime
             }
-            console.log('obj',obj);
             return obj;
         case DECLARE_USER_ID:
             const {id} = action;
             userId = {id};
-            console.log('userId',userId);
             return userId;
         default:
             return state;

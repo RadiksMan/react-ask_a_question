@@ -41,7 +41,6 @@ class History extends Component {
                 <div className="history-table">
                     {
                         allQuestion.map( (question,index) => {
-                            console.log(userId, '     ',question.id);
                             return <Question key={index} question={question} index={index} isMine={ (userId == question.id) ? true : false } />
                         })
                     }

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addQuestion, declareUserID} from '../actions';
-
-import { bake_cookie, read_cookie } from 'sfcookies';
-import shortid  from 'shortid';
+import { addQuestion } from '../actions';
 
 import {userQ} from '../firebase';
 
@@ -28,7 +25,8 @@ class Main extends Component {
         const time = Date.parse(new Date());
         this.setState({userTime:time});
 
-        const {id,userQuestionText,userTime,userAnswer,lastQuestionKey} = this.state;
+        const {userQuestionText,userTime,userAnswer,lastQuestionKey} = this.state;
+        const {id} = this.props;
 
         try{
             userQ.child(lastQuestionKey).once('value').then(function(snapshot){
@@ -55,19 +53,6 @@ class Main extends Component {
 
 
     componentDidMount() {
-        let userID = null;
-
-        if ( read_cookie('asck-a-question-id').length > 0 ) {
-            userID = read_cookie('asck-a-question-id');
-
-        }else{
-            userID = shortid.generate();
-            bake_cookie('asck-a-question-id', userID)
-        }
-
-        this.setState({id:userID});
-        this.props.declareUserID(userID);
-
 
         userQ.orderByKey().limitToLast(1).on('value', (snapshot) => {
             snapshot.forEach((childSnapshot) => {
@@ -84,7 +69,7 @@ class Main extends Component {
 
         const lastQ = {...this.state.lastQuestionData};
 
-        const isSameUser = (  this.state.id === lastQ.id ) ? true : false;
+        const isSameUser = (  this.props.id === lastQ.id ) ? true : false;
 
         return (
             <div>
@@ -135,4 +120,11 @@ class Main extends Component {
     }
 }
 
-export default connect(null,{addQuestion,declareUserID})(Main);
+function mapStateToProps(state) {
+    const {id} = state.user_question;
+    return {
+        id
+    }
+}
+
+export default connect(mapStateToProps,{addQuestion})(Main);
