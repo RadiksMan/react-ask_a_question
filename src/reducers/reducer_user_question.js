@@ -1,10 +1,6 @@
 import { ADD_QUESTION , DECLARE_USER_ID } from '../constanst';
 
-let userId = {
-    id: null
-}
-
-export default (state = [], action) => {
+export default (state = {}, action) => {
     switch(action.type){
         case ADD_QUESTION:
             const{userQuestionText,userTime} = action.params;
@@ -12,11 +8,14 @@ export default (state = [], action) => {
                 userQuestionText,
                 userTime
             }
-            return obj;
+            return Object.assign({}, state, {
+                obj
+            })
         case DECLARE_USER_ID:
             const {id} = action;
-            userId = {id};
-            return userId;
+            return Object.assign({}, state, {
+                id
+            })
         default:
             return state;
     }

@@ -12,20 +12,20 @@ class Main extends Component {
         this.state = {
             id:'',
             userQuestionText:'',
-            userTime:'',
+            //userTime:'',
             userAnswer:''
         }
 
-        this.addQuestion = this.addQuestion.bind(this);
+        this.addQuestionToBase = this.addQuestionToBase.bind(this);
     }
 
-    addQuestion(event){
+    addQuestionToBase(event){
         event.preventDefault();
 
         const time = Date.parse(new Date());
-        this.setState({userTime:time});
+        //this.setState({userTime:time});
 
-        const {userQuestionText,userTime,userAnswer,lastQuestionKey} = this.state;
+        const {userQuestionText,userAnswer,lastQuestionKey} = this.state;
         const {id} = this.props;
 
         try{
@@ -56,6 +56,8 @@ class Main extends Component {
 
         userQ.orderByKey().limitToLast(1).on('value', (snapshot) => {
             snapshot.forEach((childSnapshot) => {
+                console.log('childSnapshot', childSnapshot)
+
                 const lastQuestionKey = childSnapshot.key;
                 const lastQuestionData = childSnapshot.val();
 
@@ -68,13 +70,13 @@ class Main extends Component {
     render() {
 
         const lastQ = {...this.state.lastQuestionData};
-
-        const isSameUser = (  this.props.id === lastQ.id ) ? true : false;
+        
+        const isSameUser = (  this.props.id !== lastQ.id ) ? true : false;
 
         return (
             <div>
                 <div className="main-form">
-                    <form onSubmit={this.addQuestion}>
+                    <form onSubmit={this.addQuestionToBase}>
                         {
                             typeof lastQ !== 'undefined' &&
                             <div>
@@ -82,7 +84,7 @@ class Main extends Component {
                             </div>
                         }
 
-                        { !isSameUser ? (
+                        { isSameUser ? (
                             <div>
                                  <input
                                     type="text"
