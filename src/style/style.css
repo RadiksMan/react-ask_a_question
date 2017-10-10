@@ -52,7 +52,8 @@ h2 {
   .history-table .item-number {
     text-align: center; }
   .history-table .item-question, .history-table .item-answer {
-    font-size: 1.5em; }
+    font-size: 1.5em;
+    white-space: pre-line; }
 
 .main-form {
   padding: 5em; }

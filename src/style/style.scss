@@ -43,7 +43,7 @@ h2 {
     &:empty{display: none;}
   }
   .item-number{text-align: center;}
-  .item-question,.item-answer{font-size: 1.5em;}
+  .item-question,.item-answer{font-size: 1.5em;white-space: pre-line;}
 }
 .main-form{padding: 5em;
   .questionText{text-align: center;}

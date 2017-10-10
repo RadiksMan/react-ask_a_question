@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 import { connect } from 'react-redux';
 
@@ -24,6 +25,8 @@ class History extends Component {
         this.state = {
             questionArray:[]
         }
+
+        this.tableRowRef = '';
     }
 
     componentDidMount(){
@@ -37,7 +40,22 @@ class History extends Component {
                 questionArray.push({id,question,answer,time});
             })
             this.setState({questionArray});
-        })
+        })       
+        
+    }
+
+    scrollToBottomTable(){
+
+        let tableBodyNode = ReactDOM.findDOMNode(this.refs["table-body"]).parentNode.parentNode;
+        setTimeout(()=>{
+            let childrenHeight = tableBodyNode.children[0].offsetHeight,
+                scrollStep = childrenHeight / 15,
+                scrollInterval = setInterval(function(){
+                    if ( tableBodyNode.scrollTop <= childrenHeight ) {
+                        tableBodyNode.scrollTop+=scrollStep
+                    } else clearInterval(scrollInterval)
+                },15); 
+        },100)
     }
 
     render() {
@@ -70,9 +88,16 @@ class History extends Component {
                         <TableBody 
                             displayRowCheckbox={false} 
                             showRowHover={true}
-                            stripedRows={true}>
+                            stripedRows={true}
+                            ref="table-body"
+                        >
                             {
                                 allQuestion.map( (question,index) => {
+
+                                    if(index === allQuestion.length - 1){
+                                        this.scrollToBottomTable();
+                                    }
+
                                     return <Question 
                                             key={index} 
                                             question={question} 

@@ -63,20 +63,21 @@ class Main extends Component {
     }
 
     componentDidMount() {
+        setTimeout(()=>{
+            userQ.orderByKey().limitToLast(1).on('value', (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    console.log('childSnapshot', childSnapshot)
 
-        userQ.orderByKey().limitToLast(1).on('value', (snapshot) => {
-            snapshot.forEach((childSnapshot) => {
-                console.log('childSnapshot', childSnapshot)
+                    const lastQuestionKey = childSnapshot.key;
+                    const lastQuestionData = childSnapshot.val();
 
-                const lastQuestionKey = childSnapshot.key;
-                const lastQuestionData = childSnapshot.val();
+                    this.setState({lastQuestionKey,lastQuestionData})
 
-                this.setState({lastQuestionKey,lastQuestionData})
+                });
 
+                this.setState({loading:false})
             });
-
-            this.setState({loading:false})
-        });
+        }, 500);
     }
 
     render() {

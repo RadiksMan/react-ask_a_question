@@ -6,7 +6,6 @@ import { bake_cookie, read_cookie } from 'sfcookies';
 import shortid  from 'shortid';
 
 import RaisedButton from 'material-ui/RaisedButton';
-import {lightBlue100} from 'material-ui/styles/colors'
 
 import { declareUserID } from '../actions';
 
@@ -30,10 +29,6 @@ class Header extends Component {
     return (
         <div className="header">
           <div className="header-wrap">
-          {/* <RaisedButton
-            containerElement={<NavLink to="/"/>}
-            icon={<FontIcon className="muidocs-icon-custom-github" />}
-          /> */}
               <NavLink activeClassName="selected" exact to="/">
                 <RaisedButton 
                   label="Главная"
@@ -49,7 +44,7 @@ class Header extends Component {
               </NavLink>
               <NavLink activeClassName="selected" to="/about">
                 <RaisedButton 
-                  label="Про"
+                  label="Котик"
                   />
               </NavLink>
           </div>
