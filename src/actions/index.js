@@ -5,7 +5,6 @@ export const addQuestion = (params) => {
         type: ADD_QUESTION,
         params
     }
-    console.log('action in addQuestion', action);
     return action;
 }
 
@@ -14,6 +13,5 @@ export const declareUserID = (id) =>{
         type:DECLARE_USER_ID,
         id
     }
-    console.log('action in declareUserID', action);
     return action;
 }
