@@ -40,12 +40,12 @@ class History extends Component {
                 questionArray.push({id,question,answer,time});
             })
             this.setState({questionArray});
-        })       
-        
+        })
+
     }
 
+    //scroll to end of table
     scrollToBottomTable(){
-
         let tableBodyNode = ReactDOM.findDOMNode(this.refs["table-body"]).parentNode.parentNode;
         setTimeout(()=>{
             let childrenHeight = tableBodyNode.children[0].offsetHeight,
@@ -54,7 +54,7 @@ class History extends Component {
                     if ( tableBodyNode.scrollTop <= childrenHeight ) {
                         tableBodyNode.scrollTop+=scrollStep
                     } else clearInterval(scrollInterval)
-                },15); 
+                },15);
         },100)
     }
 
@@ -85,25 +85,24 @@ class History extends Component {
                                 </TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
-                        <TableBody 
-                            displayRowCheckbox={false} 
+                        <TableBody
+                            displayRowCheckbox={false}
                             showRowHover={true}
                             stripedRows={true}
                             ref="table-body"
                         >
                             {
-                                allQuestion.map( (question,index) => {
-
-                                    if(index === allQuestion.length - 1){
-                                        this.scrollToBottomTable();
-                                    }
-
-                                    return <Question 
-                                            key={index} 
-                                            question={question} 
-                                            index={index} 
-                                            isMine={ (userId === question.id) ? true : false } 
+                                allQuestion.reverse().map( (question,index) => {
+                                    console.log('question.id',question.id)
+                                    console.log('userId',userId)
+                                    console.log('------------------')
+                                    return <Question
+                                            key={index}
+                                            question={question}
+                                            index={(allQuestion.length-1) - index}
+                                            isMine={ (userId === question.id) ? true : false }
                                             />
+
                                 })
                             }
                         </TableBody>
@@ -116,7 +115,7 @@ class History extends Component {
 
 const Question = ({question,index,isMine}) => {
     return (
-        <TableRow className="history-row">
+        <TableRow className={isMine ? 'history-row my-question' : 'history-row'} >
             <TableRowColumn className="item-number" width="10%" style={{textAlign: 'center'}}>
                 {
                     parseInt(index,10) < 9 ? `0${index+1}.` : `${index+1}.`
