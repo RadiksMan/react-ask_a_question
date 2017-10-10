@@ -9,11 +9,13 @@
     "mocha": "^3.4.2",
     "moment": "^2.18.1",
     "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.2",
     "react-addons-test-utils": "^15.6.0",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
     "react-tap-event-plugin": "^3.0.2",
+    "react-transition-group": "^2.2.1",
     "redux": "^3.7.1",
     "sfcookies": "^1.0.2",
     "shortid": "^2.2.8"

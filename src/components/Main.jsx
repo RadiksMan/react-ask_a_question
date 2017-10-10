@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addQuestion } from '../actions';
 
-import {userQ} from '../firebase';
+import Fade from './Animations/Fade';
 
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
+
+import {userQ} from '../firebase';
 
 class Main extends Component {
 
@@ -12,8 +17,9 @@ class Main extends Component {
         this.state = {
             id:'',
             userQuestionText:'',
-            //userTime:'',
-            userAnswer:''
+            userAnswer:'',
+
+            loading:true
         }
 
         this.addQuestionToBase = this.addQuestionToBase.bind(this);
@@ -23,7 +29,6 @@ class Main extends Component {
         event.preventDefault();
 
         const time = Date.parse(new Date());
-        //this.setState({userTime:time});
 
         const {userQuestionText,userAnswer,lastQuestionKey} = this.state;
         const {id} = this.props;
@@ -35,12 +40,14 @@ class Main extends Component {
                 }
             })
         }catch(err){
-            console.log(err);
+            console.log('Error in addQuestionToBase() ->',err);
         }
+
+        let userQuestionWithQuestionMark = this.checkIfQuestionMark(userQuestionText)
 
         const questionObj = {
             id,
-            userQuestionText,
+            userQuestionText:userQuestionWithQuestionMark,
             userTime:time,
             userAnswer:''
         }
@@ -50,7 +57,10 @@ class Main extends Component {
 
         event.target.reset();
     }
-
+    
+    checkIfQuestionMark(letter){
+        return letter.trim().endsWith('?') ? letter : `${letter.trim()} ?`;
+    }
 
     componentDidMount() {
 
@@ -64,6 +74,8 @@ class Main extends Component {
                 this.setState({lastQuestionKey,lastQuestionData})
 
             });
+
+            this.setState({loading:false})
         });
     }
 
@@ -75,48 +87,72 @@ class Main extends Component {
 
         return (
             <div>
-                <div className="main-form">
-                    <form onSubmit={this.addQuestionToBase}>
-                        {
-                            typeof lastQ !== 'undefined' &&
-                            <div>
-                                <b>{lastQ.userQuestionText}</b>
-                            </div>
-                        }
+                <Fade in={!this.state.loading}>
+                    {
+                        !this.state.loading ? (
+                            <div className="main-form">
+                                <form onSubmit={this.addQuestionToBase}>
+                                    {
+                                        typeof lastQ !== 'undefined' &&
+                                        <div className="questionText">
+                                            <b>{lastQ.userQuestionText}</b>
+                                        </div>
+                                    }
 
-                        { isSameUser ? (
-                            <div>
-                                 <input
-                                    type="text"
-                                    placeholder="Ваш ответ на предыдуший вопрос"
-                                    className="main-form-input"
-                                    required
-                                    onChange={event =>{ this.setState({userAnswer:event.target.value}) }}
-                                />
-                                <hr/>
-                                <div>
-                                    <input
-                                        type="text"
-                                        placeholder="Ваш вопрос"
-                                        className="main-form-input"
-                                        required
-                                        onChange={event =>{ this.setState({userQuestionText:event.target.value}) }}
-                                    />
-                                </div>
-                                <button
-                                        className="main-form-btn"
-                                        type="submit"
-                                    >
-                                    Задать вопрос
-                                </button>
+                                    <Fade in={!isSameUser}>
+                                        { isSameUser ? (
+                                            <div className="questionForm" >
+                                                <TextField
+                                                    onChange={event =>{ this.setState({userAnswer:event.target.value}) }}
+                                                    required
+                                                    floatingLabelText="Ваш ответ на предыдуший вопрос"
+                                                    fullWidth={true}
+                                                    multiLine={true}
+                                                    className="main-form-input"
+                                                />
+                                                <br />
+                                                <div>
+                                                    <TextField
+                                                        onChange={event =>{ this.setState({userQuestionText:event.target.value}) }}
+                                                        required
+                                                        floatingLabelText="Ваш новый вопрос"
+                                                        fullWidth={true}
+                                                        multiLine={true}
+                                                        className="main-form-input"
+                                                    />
+                                                </div>
+                                                <br />
+                                                <RaisedButton
+                                                    label="Задать вопрос"
+                                                    type="submit"
+                                                    primary={true}
+                                                    fullWidth={true}
+                                                ></RaisedButton>
+                                            </div>
+                                            ) : (
+                                                <div className="answered" >
+                                                    <p>Вы уже ответели на вопрос</p>
+                                                    <p>Дождитесь, пока кто-нибуть ответить на ваш вопрос</p>
+                                                </div>
+                                            )
+                                        }
+                                    </Fade>
+                                </form>
                             </div>
                         ) : (
-                            <div>Вы уже ответели на вопрос</div>
+                            <RefreshIndicator
+                                size={50}
+                                left={0}
+                                top={0}
+                                loadingColor="#FF9800"
+                                style={{
+                                    position:'relative'
+                                }}
+                                status="loading"
+                            />
                         )
-
-                        }
-                    </form>
-                </div>
+                    }
+                </Fade>
             </div>
         )
     }
