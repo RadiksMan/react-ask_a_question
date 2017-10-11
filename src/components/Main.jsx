@@ -57,7 +57,7 @@ class Main extends Component {
 
         event.target.reset();
     }
-    
+
     checkIfQuestionMark(letter){
         return letter.trim().endsWith('?') ? letter : `${letter.trim()} ?`;
     }
@@ -83,7 +83,7 @@ class Main extends Component {
     render() {
 
         const lastQ = {...this.state.lastQuestionData};
-        
+
         const isSameUser = (  this.props.id !== lastQ.id ) ? true : false;
 
         return (
@@ -111,7 +111,7 @@ class Main extends Component {
                                                     multiLine={true}
                                                     className="main-form-input"
                                                 />
-                                                <br />
+                                                <br /><br />
                                                 <div>
                                                     <TextField
                                                         onChange={event =>{ this.setState({userQuestionText:event.target.value}) }}

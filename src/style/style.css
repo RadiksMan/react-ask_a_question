@@ -49,6 +49,8 @@ h2 {
   max-width: 80vw; }
   .history-table th:empty {
     display: none; }
+  .history-table .my-question {
+    background: #dddddd; }
   .history-table .item-number {
     text-align: center; }
   .history-table .item-question, .history-table .item-answer {
